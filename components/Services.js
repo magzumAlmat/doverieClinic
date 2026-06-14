@@ -29,11 +29,11 @@ export default function Services() {
       />
       <Container className="relative">
         <div className="max-w-2xl">
-          <Eyebrow>Программы лечения</Eyebrow>
+          <Eyebrow>Наши услуги</Eyebrow>
           <h2 className="mt-4 text-3xl font-bold text-foreground sm:text-4xl">
-            Полный путь восстановления —{" "}
+            Помощь на каждом этапе —{" "}
             <span className="bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
-              от первого шага до новой жизни
+              от первой консультации до устойчивого результата
             </span>
           </h2>
           <p className="mt-4 text-lg text-muted-foreground">

@@ -122,8 +122,8 @@ export default function Hero() {
             variants={reveal}
             className="mt-7 text-4xl font-extrabold leading-[1.05] text-foreground sm:text-6xl lg:text-7xl"
           >
-            Помогаем вернуться
-            <br className="hidden sm:block" /> к трезвой жизни{" "}
+            Заботимся о вашем
+            <br className="hidden sm:block" /> душевном здоровье{" "}
             <span className="shine-text bg-gradient-to-r from-primary via-secondary to-primary bg-clip-text text-transparent">
               — с доверием
             </span>
@@ -134,9 +134,9 @@ export default function Hero() {
             variants={reveal}
             className="mt-6 max-w-xl text-lg leading-relaxed text-muted-foreground"
           >
-            {CLINIC.fullName}. Конфиденциальная помощь при зависимом
-            поведении по доказательным методикам — бережно и с поддержкой
-            для всей семьи.
+            {CLINIC.fullName}. Конфиденциальная помощь психиатра,
+            психотерапевта и психолога по доказательным методикам — бережно
+            и с поддержкой для всей семьи.
           </motion.p>
 
           {/* CTA buttons */}

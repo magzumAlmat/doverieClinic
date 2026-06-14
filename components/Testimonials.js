@@ -85,7 +85,7 @@ export default function Testimonials() {
             </span>
           </h2>
           <p className="mt-4 text-lg text-muted-foreground">
-            Реальные слова близких и выпускников программы. Имена изменены —
+            Реальные слова пациентов и их близких. Имена изменены —
             мы бережём конфиденциальность каждого.
           </p>
         </motion.div>
