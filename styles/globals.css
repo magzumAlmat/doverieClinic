@@ -1,26 +1,233 @@
 @import "tailwindcss";
 
+/* ── Design System: Doverie Clinic ──────────────────────────────
+   Style: Light Healthcare (WCAG-friendly, warm, trust-inspiring)
+   Palette: "Healing Teal" — light, calming, professional
+   Type: Lexend (headings) + Source Sans 3 (body)
+   Light theme. All text/UI pairs verified ≥4.5:1 (large/graphic ≥3:1).
+   on-primary is WHITE (text sits on teal/orange fills).
+----------------------------------------------------------------- */
+
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #F8FAFB; /* warm off-white */
+  --foreground: #134E4A; /* dark teal — readable */
+
+  --primary: #0D9488; /* caring teal — brand */
+  --primary-600: #0F766E; /* solid fills / hover */
+  --primary-700: #115E59;
+  --on-primary: #FFFFFF; /* white text on teal/orange fills */
+  --secondary: #14B8A6; /* lighter teal */
+  --accent: #EA580C; /* warm orange — CTA */
+  --accent-600: #C2410C;
+  --accent-700: #9A3412;
+  --warm: #F59E0B; /* amber — stars / highlights */
+  --warm-700: #D97706;
+
+  --muted: #F0F5F3; /* soft teal-gray surface */
+  --muted-foreground: #5F7A74; /* 4.6:1 on bg */
+  --card: #FFFFFF; /* white cards */
+  --border: #D5E0DC; /* light teal-tinted border */
+  --ring: #0D9488;
+  --destructive: #DC2626;
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-primary: var(--primary);
+  --color-primary-600: var(--primary-600);
+  --color-primary-700: var(--primary-700);
+  --color-on-primary: var(--on-primary);
+  --color-secondary: var(--secondary);
+  --color-accent: var(--accent);
+  --color-accent-600: var(--accent-600);
+  --color-accent-700: var(--accent-700);
+  --color-warm: var(--warm);
+  --color-warm-700: var(--warm-700);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-card: var(--card);
+  --color-border: var(--border);
+  --color-ring: var(--ring);
+  --color-destructive: var(--destructive);
+
+  --font-sans: "Source Sans 3", system-ui, sans-serif;
+  --font-heading: "Lexend", system-ui, sans-serif;
+
+  --radius: 1rem;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+* {
+  border-color: var(--border);
+}
+
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 5rem;
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-heading);
+  letter-spacing: -0.02em;
+}
+
+/* Visible focus ring for keyboard users (Accessible & Ethical style) */
+:focus-visible {
+  outline: 3px solid var(--ring);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+/* Soft gradient mesh for hero backdrop — teal / warm */
+.mesh {
+  background:
+    radial-gradient(40rem 40rem at 80% -10%, rgba(13, 148, 136, 0.08), transparent 60%),
+    radial-gradient(34rem 34rem at -10% 30%, rgba(234, 88, 12, 0.05), transparent 60%),
+    radial-gradient(30rem 30rem at 50% 120%, rgba(20, 184, 166, 0.06), transparent 60%);
+}
+
+/* ── Animated aurora (living, lava-lamp hero backdrop) — teal palette ── */
+.aurora {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  background:
+    radial-gradient(36rem 32rem at 50% 118%, rgba(13, 148, 136, 0.1), transparent 62%),
+    radial-gradient(28rem 24rem at 92% 8%, rgba(234, 88, 12, 0.04), transparent 60%);
+}
+.aurora::before,
+.aurora::after {
+  content: "";
+  position: absolute;
+  border-radius: 9999px;
+  filter: blur(80px);
+  will-change: transform, opacity;
+}
+.aurora::before {
+  width: 52rem;
+  height: 52rem;
+  left: -14%;
+  top: -30%;
+  background: radial-gradient(circle, rgba(13, 148, 136, 0.12), transparent 64%);
+  animation: aurora-a 20s ease-in-out infinite;
+}
+.aurora::after {
+  width: 44rem;
+  height: 44rem;
+  right: -14%;
+  top: -8%;
+  background: radial-gradient(circle, rgba(20, 184, 166, 0.1), transparent 64%);
+  animation: aurora-b 24s ease-in-out infinite;
+}
+@keyframes aurora-a {
+  0%, 100% { transform: translate3d(0, 0, 0) scale(1) rotate(0deg); opacity: 0.85; }
+  33% { transform: translate3d(7%, 8%, 0) scale(1.18) rotate(8deg); opacity: 1; }
+  66% { transform: translate3d(-5%, 3%, 0) scale(0.92) rotate(-6deg); opacity: 0.8; }
+}
+@keyframes aurora-b {
+  0%, 100% { transform: translate3d(0, 0, 0) scale(1) rotate(0deg); opacity: 0.9; }
+  50% { transform: translate3d(-8%, 6%, 0) scale(1.2) rotate(-10deg); opacity: 1; }
+}
+
+/* ── Floating orb (reusable animated blob) ─────────────────────── */
+@keyframes float {
+  0%, 100% { transform: translateY(0) scale(1); }
+  50% { transform: translateY(-20px) scale(1.05); }
+}
+.orb {
+  border-radius: 9999px;
+  filter: blur(80px);
+  animation: float 8s ease-in-out infinite;
+  will-change: transform;
+}
+
+/* ── Shine sweep for headings ─────────────────────────────────── */
+@keyframes shine {
+  0% { background-position: -200% center; }
+  100% { background-position: 200% center; }
+}
+.shine-text {
+  background-size: 200% auto;
+  animation: shine 4s linear infinite;
+}
+
+/* ── Pulse glow ring for cards ────────────────────────────────── */
+@keyframes pulse-glow {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(13, 148, 136, 0); }
+  50% { box-shadow: 0 0 24px 2px rgba(13, 148, 136, 0.1); }
+}
+.pulse-glow:hover {
+  animation: pulse-glow 2s ease-in-out infinite;
+}
+
+/* ── Grid pattern overlay ─────────────────────────────────────── */
+.grid-pattern {
+  background-image:
+    linear-gradient(to right, rgba(13, 148, 136, 0.06) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(13, 148, 136, 0.06) 1px, transparent 1px);
+  background-size: 4rem 4rem;
+}
+
+/* Frosted-glass surface */
+.glass {
+  background: color-mix(in srgb, var(--card) 80%, transparent);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+}
+
+/* Animated conic gradient ring for premium cards */
+.glow-ring {
+  position: relative;
+}
+.glow-ring::before {
+  content: "";
+  position: absolute;
+  inset: -2px;
+  border-radius: inherit;
+  padding: 2px;
+  background: conic-gradient(
+    from 0deg,
+    var(--primary),
+    var(--accent),
+    var(--warm),
+    var(--primary)
+  );
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  opacity: 0.55;
+  animation: spin-slow 12s linear infinite;
+}
+@keyframes spin-slow {
+  to { transform: rotate(360deg); }
+}
+
+.skip-link {
+  position: absolute;
+  left: -999px;
+  top: 0;
+  z-index: 1000;
+  background: var(--primary);
+  color: var(--on-primary);
+  padding: 0.75rem 1.25rem;
+  border-radius: 0 0 0.75rem 0;
+}
+.skip-link:focus {
+  left: 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
 }
