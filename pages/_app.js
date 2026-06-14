@@ -16,7 +16,8 @@ export default function App({ Component, pageProps }) {
         {`window.dataLayer = window.dataLayer || [];
 function gtag(){dataLayer.push(arguments);}
 gtag('js', new Date());
-gtag('config', 'AW-18239073730');`}
+gtag('config', 'AW-18239073730');
+gtag('config', 'AW-18238841913');`}
       </Script>
       <Component {...pageProps} />
     </MotionConfig>
