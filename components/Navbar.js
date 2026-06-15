@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Menu, X, Phone, HeartPulse, MessageCircle } from "lucide-react";
+import { Menu, X, Phone, MessageCircle } from "lucide-react";
 import { CLINIC, NAV } from "@/lib/site";
 import { Container, Button } from "@/components/ui/primitives";
 
@@ -47,13 +47,14 @@ export default function Navbar() {
     >
       <Container className="flex h-16 items-center justify-between sm:h-20">
         <a href="#main" className="flex items-center gap-2.5">
-          <motion.span
-            whileHover={{ scale: 1.1, rotate: -5 }}
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <motion.img
+            src="/logo.png"
+            alt="Doverie clinic"
+            whileHover={{ scale: 1.06 }}
             transition={{ type: "spring", stiffness: 400, damping: 15 }}
-            className="grid h-10 w-10 place-items-center rounded-xl bg-primary text-on-primary shadow-lg shadow-primary/20"
-          >
-            <HeartPulse size={22} aria-hidden />
-          </motion.span>
+            className="h-10 w-auto sm:h-11"
+          />
           <span className="text-xl font-extrabold tracking-tight text-foreground">
             {CLINIC.name}
             <span className="text-primary"> clinic</span>

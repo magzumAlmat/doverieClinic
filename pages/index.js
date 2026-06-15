@@ -48,7 +48,10 @@ export default function Home() {
         <meta name="twitter:description" content={CLINIC.tagline} />
         <meta name="twitter:image" content="https://doverie-clinic.kz/og.jpg" />
 
-        <link rel="icon" href="/favicon.ico" />
+        <link rel="icon" href="/favicon.ico" sizes="any" />
+        <link rel="icon" type="image/png" sizes="192x192" href="/icon-192.png" />
+        <link rel="icon" type="image/png" sizes="512x512" href="/icon-512.png" />
+        <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
 
         {/* Structured data — local medical business (rich results + local SEO) */}
         <script
