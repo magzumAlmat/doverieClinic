@@ -85,7 +85,24 @@ export default function QuizForm() {
     if (digits.length < 10) errs.phone = "Введите корректный номер";
     setErrors(errs);
     if (Object.keys(errs).length === 0) {
-      // No backend yet — in production POST to /api/lead
+      const details =
+        questions
+          .map((q) => {
+            const opt = q.options.find((o) => o.score === answers[q.id]);
+            return `• ${q.text} — ${opt ? opt.label : "—"}`;
+          })
+          .join("\n") + `\n\nРезультат: ${result?.title ?? "—"} (баллы: ${score})`;
+      // fire-and-forget → Telegram через /api/lead
+      fetch("/api/lead", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          name: contact.name,
+          phone: contact.phone,
+          source: "quiz",
+          details,
+        }),
+      }).catch(() => {});
       setStep("done");
     }
   }
