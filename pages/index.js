@@ -7,7 +7,7 @@ import Doctors from "@/components/Doctors";
 import Pricing from "@/components/Pricing";
 import Testimonials from "@/components/Testimonials";
 import About from "@/components/About";
-import Licenses from "@/components/Licenses";
+// import Licenses from "@/components/Licenses"; // скрыто: лицензий пока нет
 import Faq from "@/components/Faq";
 import QuizForm from "@/components/QuizForm";
 import Contacts from "@/components/Contacts";
@@ -99,7 +99,7 @@ export default function Home() {
         <Pricing />
         <Testimonials />
         <About />
-        <Licenses />
+        {/* <Licenses /> — скрыто: лицензий пока нет */}
         <Faq />
         <QuizForm />
         <Contacts />
