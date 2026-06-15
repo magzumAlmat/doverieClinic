@@ -46,16 +46,16 @@ export default function Navbar() {
       }`}
     >
       <Container className="flex h-16 items-center justify-between sm:h-20">
-        <a href="#main" className="flex items-center gap-2.5">
+        <a href="#main" className="flex shrink-0 items-center gap-2">
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <motion.img
             src="/logo.png"
             alt="Doverie clinic"
             whileHover={{ scale: 1.06 }}
             transition={{ type: "spring", stiffness: 400, damping: 15 }}
-            className="h-10 w-auto sm:h-11"
+            className="h-9 w-auto shrink-0"
           />
-          <span className="text-xl font-extrabold tracking-tight text-foreground">
+          <span className="whitespace-nowrap text-lg font-extrabold tracking-tight text-foreground sm:text-xl">
             {CLINIC.name}
             <span className="text-primary"> clinic</span>
           </span>
@@ -88,7 +88,7 @@ export default function Navbar() {
           </Button>
           <a
             href={CLINIC.phone2Href}
-            className="inline-flex items-center gap-1.5 whitespace-nowrap rounded-full px-2.5 py-2 text-sm font-semibold text-foreground transition-colors hover:text-primary"
+            className="hidden items-center gap-1.5 whitespace-nowrap rounded-full px-2.5 py-2 text-sm font-semibold text-foreground transition-colors hover:text-primary xl:inline-flex"
           >
             <Phone size={16} aria-hidden />
             {CLINIC.phone2}
