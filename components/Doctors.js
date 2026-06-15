@@ -122,7 +122,7 @@ export default function Doctors() {
           initial="hidden"
           whileInView="show"
           viewport={{ once: true, amount: 0.15 }}
-          className="mt-12 grid grid-cols-2 gap-4 sm:gap-5 lg:grid-cols-3"
+          className="mt-12 grid grid-cols-2 gap-4 sm:gap-5 lg:mx-auto lg:max-w-3xl"
         >
           {DOCTORS.map((doc) => (
             <DoctorCard key={doc.name} doc={doc} />
