@@ -86,6 +86,13 @@ export default function Navbar() {
             {CLINIC.phone}
           </Button>
           <a
+            href={CLINIC.phone2Href}
+            className="inline-flex items-center gap-1.5 whitespace-nowrap rounded-full px-2.5 py-2 text-sm font-semibold text-foreground transition-colors hover:text-primary"
+          >
+            <Phone size={16} aria-hidden />
+            {CLINIC.phone2}
+          </a>
+          <a
             href={CLINIC.whatsapp}
             target="_blank"
             rel="noopener noreferrer"
@@ -130,6 +137,10 @@ export default function Navbar() {
               <Button href={CLINIC.phoneHref} variant="accent" className="mt-2 w-full">
                 <Phone size={18} aria-hidden />
                 {CLINIC.phone}
+              </Button>
+              <Button href={CLINIC.phone2Href} variant="outline" className="w-full">
+                <Phone size={18} aria-hidden />
+                {CLINIC.phone2}
               </Button>
             </Container>
           </motion.div>
