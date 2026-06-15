@@ -1,4 +1,5 @@
-import { motion } from "framer-motion";
+import { useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import {
   ShieldPlus,
   HeartHandshake,
@@ -7,9 +8,19 @@ import {
   Sprout,
   LifeBuoy,
   ArrowRight,
+  Phone,
+  X,
+  CheckCircle2,
 } from "lucide-react";
 import { SERVICES, STEPS } from "@/lib/site";
-import { Container, Section, Eyebrow, reveal, stagger } from "@/components/ui/primitives";
+import {
+  Container,
+  Section,
+  Eyebrow,
+  Button,
+  inputClass,
+  stagger,
+} from "@/components/ui/primitives";
 
 const ICONS = { ShieldPlus, HeartHandshake, Brain, Users, Sprout, LifeBuoy };
 
@@ -19,6 +30,48 @@ const cardVariants = {
 };
 
 export default function Services() {
+  const [active, setActive] = useState(null); // название услуги или null
+  const [form, setForm] = useState({ phone: "", message: "" });
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [sent, setSent] = useState(false);
+
+  function openModal(title) {
+    setActive(title);
+    setForm({ phone: "", message: "" });
+    setError("");
+    setSent(false);
+  }
+  function closeModal() {
+    setActive(null);
+  }
+
+  async function submit(e) {
+    e.preventDefault();
+    if (form.phone.replace(/\D/g, "").length < 10) {
+      setError("Введите корректный номер телефона");
+      return;
+    }
+    setError("");
+    setLoading(true);
+    try {
+      await fetch("/api/lead", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          phone: form.phone,
+          message: form.message,
+          source: `Услуга: ${active}`,
+        }),
+      });
+      setSent(true);
+    } catch {
+      setSent(true);
+    } finally {
+      setLoading(false);
+    }
+  }
+
   return (
     <Section id="services" className="relative overflow-hidden">
       {/* Background orb */}
@@ -55,11 +108,11 @@ export default function Services() {
               <motion.article
                 key={s.title}
                 variants={cardVariants}
-                whileHover={{ y: -8, scale: 1.02 }}
+                whileHover={{ y: -8 }}
                 transition={{ type: "spring", stiffness: 300, damping: 20 }}
-                className="pulse-glow group relative rounded-3xl border border-border bg-card p-6 shadow-sm transition-all"
+                className="pulse-glow group relative flex flex-col rounded-3xl border border-border bg-card p-6 shadow-sm transition-all"
               >
-                <div className="absolute inset-0 rounded-3xl bg-gradient-to-br from-primary/5 to-transparent opacity-0 transition-opacity group-hover:opacity-100" />
+                <div className="pointer-events-none absolute inset-0 rounded-3xl bg-gradient-to-br from-primary/5 to-transparent opacity-0 transition-opacity group-hover:opacity-100" />
                 <span className="relative grid h-12 w-12 place-items-center rounded-2xl bg-muted text-primary transition-all duration-300 group-hover:bg-primary group-hover:text-on-primary group-hover:shadow-lg group-hover:shadow-primary/20">
                   {Icon ? <Icon size={24} aria-hidden /> : null}
                 </span>
@@ -79,6 +132,15 @@ export default function Services() {
                     aria-hidden
                   />
                 </div>
+                <Button
+                  as="button"
+                  type="button"
+                  variant="outline"
+                  className="relative mt-5 w-full"
+                  onClick={() => openModal(s.title)}
+                >
+                  <Phone size={16} aria-hidden /> Проконсультироваться
+                </Button>
               </motion.article>
             );
           })}
@@ -117,6 +179,125 @@ export default function Services() {
           </div>
         </div>
       </Container>
+
+      {/* ── Модалка консультации ── */}
+      <AnimatePresence>
+        {active && (
+          <motion.div
+            className="fixed inset-0 z-[100] flex items-end justify-center bg-black/50 p-4 backdrop-blur-sm sm:items-center"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            onClick={closeModal}
+            role="dialog"
+            aria-modal="true"
+            aria-label="Заявка на консультацию"
+          >
+            <motion.div
+              className="relative w-full max-w-md rounded-3xl border border-border bg-card p-6 shadow-2xl sm:p-8"
+              initial={{ opacity: 0, y: 30, scale: 0.98 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
+              exit={{ opacity: 0, y: 30, scale: 0.98 }}
+              transition={{ type: "spring", stiffness: 260, damping: 24 }}
+              onClick={(e) => e.stopPropagation()}
+            >
+              <button
+                type="button"
+                onClick={closeModal}
+                aria-label="Закрыть"
+                className="absolute right-4 top-4 grid h-9 w-9 place-items-center rounded-full text-muted-foreground transition-colors hover:bg-muted hover:text-foreground cursor-pointer"
+              >
+                <X size={20} aria-hidden />
+              </button>
+
+              {sent ? (
+                <div className="flex flex-col items-center py-6 text-center">
+                  <span className="grid h-16 w-16 place-items-center rounded-full bg-accent/15 text-accent">
+                    <CheckCircle2 size={36} aria-hidden />
+                  </span>
+                  <h3 className="mt-5 text-2xl font-bold text-foreground">
+                    Заявка отправлена
+                  </h3>
+                  <p className="mt-2 max-w-sm text-muted-foreground">
+                    Мы перезвоним вам в ближайшее время. Берегите себя.
+                  </p>
+                  <Button as="button" variant="ghost" className="mt-6" onClick={closeModal}>
+                    Закрыть
+                  </Button>
+                </div>
+              ) : (
+                <form onSubmit={submit} noValidate>
+                  <p className="text-sm font-semibold text-primary-600">{active}</p>
+                  <h3 className="mt-1 text-xl font-bold text-foreground sm:text-2xl">
+                    Проконсультироваться
+                  </h3>
+                  <p className="mt-2 text-sm text-muted-foreground">
+                    Оставьте телефон — перезвоним и бесплатно проконсультируем.
+                  </p>
+
+                  <div className="mt-5 space-y-4">
+                    <div>
+                      <label
+                        htmlFor="svc-phone"
+                        className="mb-1.5 block text-sm font-semibold text-foreground"
+                      >
+                        Телефон <span className="text-destructive">*</span>
+                      </label>
+                      <input
+                        id="svc-phone"
+                        type="tel"
+                        inputMode="tel"
+                        autoComplete="tel"
+                        autoFocus
+                        value={form.phone}
+                        onChange={(e) => setForm({ ...form, phone: e.target.value })}
+                        aria-invalid={!!error}
+                        className={inputClass}
+                        placeholder="+7 (___) ___-__-__"
+                      />
+                      {error && (
+                        <p role="alert" className="mt-1.5 text-sm text-destructive">
+                          {error}
+                        </p>
+                      )}
+                    </div>
+
+                    <div>
+                      <label
+                        htmlFor="svc-msg"
+                        className="mb-1.5 block text-sm font-semibold text-foreground"
+                      >
+                        Текст заявки
+                      </label>
+                      <textarea
+                        id="svc-msg"
+                        rows={3}
+                        value={form.message}
+                        onChange={(e) => setForm({ ...form, message: e.target.value })}
+                        className={`${inputClass} resize-none`}
+                        placeholder="Опишите вашу ситуацию или вопрос"
+                      />
+                    </div>
+                  </div>
+
+                  <Button
+                    as="button"
+                    type="submit"
+                    variant="accent"
+                    className="mt-6 w-full"
+                    loading={loading}
+                  >
+                    {loading ? "Отправляем…" : "Отправить заявку"}
+                  </Button>
+                  <p className="mt-3 text-center text-xs text-muted-foreground">
+                    Нажимая кнопку, вы соглашаетесь на обработку персональных данных
+                  </p>
+                </form>
+              )}
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </Section>
   );
 }

@@ -15,9 +15,6 @@ export default async function handler(req, res) {
 
   const { name, phone, message = "", source = "site", details = "" } = req.body || {};
 
-  if (!name || String(name).trim().length < 2) {
-    return res.status(400).json({ ok: false, error: "Invalid name" });
-  }
   if (!phone || String(phone).replace(/\D/g, "").length < 10) {
     return res.status(400).json({ ok: false, error: "Invalid phone" });
   }
@@ -31,7 +28,7 @@ export default async function handler(req, res) {
   }
 
   let text = `🌐 <b>Новая заявка с сайта doverie-clinic.kz</b>\n\n`;
-  text += `👤 <b>Имя:</b> ${esc(name)}\n`;
+  text += `👤 <b>Имя:</b> ${name ? esc(name) : "не указано"}\n`;
   text += `📞 <b>Телефон:</b> <code>${esc(phone)}</code>\n`;
   text += `🏷️ <b>Форма:</b> <code>${esc(source)}</code>\n`;
   if (message) text += `\n📝 <b>Сообщение:</b>\n${esc(message)}\n`;
